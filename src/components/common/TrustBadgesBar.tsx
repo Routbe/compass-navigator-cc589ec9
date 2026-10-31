@@ -22,8 +22,8 @@ interface TrustBadge {
 const BADGES: TrustBadge[] = [
   {
     id: "agpl",
-    label: "AGPL-3.0 Open Source",
-    tooltip: "Elke regel code is publiek: controleer, fork of host ROUT zelf onder AGPL-3.0.",
+    label: "AGPLv3 (Netwerk-Copyleft)",
+    tooltip: "Controleer, fork of host ROUT onder AGPL-3.0-or-later. Gewijzigde netwerkdiensten moeten gebruikers de bijbehorende broncode aanbieden.",
     accent: "group-hover:text-violet-600 dark:group-hover:text-purple-400",
     href: "https://github.com/Routbe",
     icon: (
