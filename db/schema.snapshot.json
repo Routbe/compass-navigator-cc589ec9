@@ -113,7 +113,12 @@
       "max": "9223372036854775807",
       "cycle": false,
       "ownedBy": "public.security_audit_logs.id",
-      "grants": {}
+      "grants": {
+        "rout_app": [
+          "SELECT",
+          "USAGE"
+        ]
+      }
     }
   ],
   "tables": [
@@ -1273,8 +1278,10 @@
       ],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
-          "SELECT"
+          "SELECT",
+          "UPDATE"
         ]
       }
     },
@@ -1355,6 +1362,7 @@
       ],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -3896,7 +3904,7 @@
         {
           "name": "booking_event_types_duration_minutes_check",
           "kind": "c",
-          "def": "CHECK (((duration_minutes >= 5) AND (duration_minutes <= 480) AND ((duration_minutes % 5) = 0)))"
+          "def": "CHECK ((((duration_minutes >= 5) AND (duration_minutes <= 480)) AND ((duration_minutes % 5) = 0)))"
         },
         {
           "name": "booking_event_types_location_kind_check",
@@ -7096,6 +7104,108 @@
     },
     {
       "schema": "public",
+      "name": "identity_disclosure_logs",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "notNull": true,
+          "default": "gen_random_uuid()",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "client_id",
+          "type": "text",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "disclosed_scopes",
+          "type": "text[]",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "disclosed_at",
+          "type": "timestamp with time zone",
+          "notNull": true,
+          "default": "now()",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "ip_hash",
+          "type": "text",
+          "notNull": true,
+          "default": null,
+          "identity": null,
+          "generated": null
+        }
+      ],
+      "constraints": [
+        {
+          "name": "identity_disclosure_logs_client_id_check",
+          "kind": "c",
+          "def": "CHECK (((char_length(client_id) >= 1) AND (char_length(client_id) <= 200)))"
+        },
+        {
+          "name": "identity_disclosure_logs_ip_hash_check",
+          "kind": "c",
+          "def": "CHECK (((char_length(ip_hash) >= 1) AND (char_length(ip_hash) <= 128)))"
+        },
+        {
+          "name": "identity_disclosure_logs_pkey",
+          "kind": "p",
+          "def": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "identity_disclosure_logs_user_id_fkey",
+          "kind": "f",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX identity_disclosure_logs_user_idx ON public.identity_disclosure_logs USING btree (user_id, disclosed_at DESC)"
+      ],
+      "triggers": [],
+      "rls": true,
+      "forceRls": false,
+      "policies": [
+        {
+          "name": "rout_scope",
+          "permissive": true,
+          "roles": [
+            "public"
+          ],
+          "cmd": "ALL",
+          "using": "(user_id = rout_current_user_id())",
+          "check": "(user_id = rout_current_user_id())"
+        }
+      ],
+      "grants": {
+        "rout_app": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      }
+    },
+    {
+      "schema": "public",
       "name": "identity_labels",
       "columns": [
         {
@@ -9177,9 +9287,54 @@
           "default": "'{}'::text[]",
           "identity": null,
           "generated": null
+        },
+        {
+          "name": "allowed_scopes",
+          "type": "text[]",
+          "notNull": true,
+          "default": "ARRAY['openid'::text, 'profile:read'::text, 'sybil:verify'::text]",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "is_trusted_kyc_partner",
+          "type": "boolean",
+          "notNull": true,
+          "default": "false",
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "backchannel_webhook_url",
+          "type": "text",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "backchannel_webhook_secret_sealed",
+          "type": "text",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
+        },
+        {
+          "name": "backchannel_webhook_secret_iv",
+          "type": "text",
+          "notNull": false,
+          "default": null,
+          "identity": null,
+          "generated": null
         }
       ],
       "constraints": [
+        {
+          "name": "oauth_clients_backchannel_url_https",
+          "kind": "c",
+          "def": "CHECK (((backchannel_webhook_url IS NULL) OR ((backchannel_webhook_url ~~ 'https://%'::text) AND (char_length(backchannel_webhook_url) <= 2048))))"
+        },
         {
           "name": "oauth_clients_client_id_key",
           "kind": "u",
@@ -9498,8 +9653,10 @@
       ],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
-          "SELECT"
+          "SELECT",
+          "UPDATE"
         ]
       }
     },
@@ -9614,6 +9771,7 @@
       ],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -13114,7 +13272,14 @@
       "rls": true,
       "forceRls": false,
       "policies": [],
-      "grants": {}
+      "grants": {
+        "rout_app": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      }
     },
     {
       "schema": "public",
@@ -13230,7 +13395,14 @@
       "rls": true,
       "forceRls": false,
       "policies": [],
-      "grants": {}
+      "grants": {
+        "rout_app": [
+          "DELETE",
+          "INSERT",
+          "SELECT",
+          "UPDATE"
+        ]
+      }
     },
     {
       "schema": "public",
@@ -17434,6 +17606,7 @@
       ],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -17790,6 +17963,7 @@
       "policies": [],
       "grants": {
         "rout_app": [
+          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -18632,7 +18806,7 @@
         {
           "name": "workspaces_slug_check",
           "kind": "c",
-          "def": "CHECK (((char_length(slug) >= 3) AND (char_length(slug) <= 40) AND (slug ~ '^[a-z0-9-]+$'::text) AND (slug <> ALL (ARRAY['admin'::text, 'api'::text, 'auth'::text, 'u'::text, 'w'::text, 'studio'::text, 'settings'::text, 'rout'::text])))) NOT VALID"
+          "def": "CHECK ((((char_length(slug) >= 3) AND (char_length(slug) <= 40)) AND (slug ~ '^[a-z0-9-]+$'::text) AND (slug <> ALL (ARRAY['admin'::text, 'api'::text, 'auth'::text, 'u'::text, 'w'::text, 'studio'::text, 'settings'::text, 'rout'::text])))) NOT VALID"
         },
         {
           "name": "workspaces_slug_key",
