@@ -9,6 +9,7 @@ const db = {
   assignments: new Map<string, { source: string; alias_id: string | null; assigned_email: string }>(),
   trusted: new Set<string>(),
   logs: [] as unknown[][],
+  logFailure: false,
 };
 vi.mock("@/lib/neon", () => ({
   sql: (strings: TemplateStringsArray, ...vals: unknown[]) => {
@@ -30,7 +31,10 @@ vi.mock("@/lib/neon", () => ({
     if (q.includes("from public.oauth_clients")) return Promise.resolve([]);
     if (q.includes("from public.verified_identities"))
       return Promise.resolve([{ tier_1_real_human: true, tier_2_legal_identity: true, identity_nullifier: "n-1", national_id_nullifier: "nat-1", legal_name: "Jona Zeno Delplanche" }]);
-    if (q.includes("insert into public.identity_disclosure_logs")) { db.logs.push(vals); return Promise.resolve([]); }
+    if (q.includes("insert into public.identity_disclosure_logs")) {
+      if (db.logFailure) return Promise.reject(new Error("audit_unavailable"));
+      db.logs.push(vals); return Promise.resolve([]);
+    }
     return Promise.resolve([]);
   },
 }));
@@ -39,6 +43,7 @@ beforeEach(() => {
   db.assignments.clear();
   db.trusted.clear();
   db.logs = [];
+  db.logFailure = false;
   process.env["ROUT_PROVIDER_PAIRWISE_SECRET"] = "p".repeat(40);
   process.env["ROUT_SYBIL_PEPPER"] = "q".repeat(40);
 });
@@ -80,6 +85,29 @@ describe("national_id rules", () => {
 });
 
 describe("userinfo email per app", () => {
+  it("keeps an app's previous primary until explicitly updated", async () => {
+    const { generateUserInfoResponse } = await import("@/lib/auth/oidc-identifiers.server");
+    db.assignments.set("app-a", { source: "primary", alias_id: null, assigned_email: "previous@mail.be" });
+    const result = await generateUserInfoResponse("user-1", "app-a", ["openid", "email"], { sub: "sa" });
+    expect(result["email"]).toBe("previous@mail.be");
+    expect(result["email_verified"]).toBe(false);
+  });
+  it("omits email rather than exposing primary when a selected alias is unavailable", async () => {
+    const { generateUserInfoResponse } = await import("@/lib/auth/oidc-identifiers.server");
+    db.assignments.set("app-a", { source: "alias", alias_id: "removed", assigned_email: "hidden@rout.be" });
+    const result = await generateUserInfoResponse("user-1", "app-a", ["openid", "email"], { sub: "sa" });
+    expect(result).not.toHaveProperty("email");
+  });
+  it("rejects an explicit email choice outside the member's options", async () => {
+    const { assignAppEmail } = await import("./email-broker.server");
+    await expect(assignAppEmail("user-1", "app-a", "someone-else")).rejects.toThrow("email_choice_unavailable");
+    expect(db.assignments.size).toBe(0);
+  });
+  it("refuses sensitive disclosure when its audit record cannot be saved", async () => {
+    db.logFailure = true;
+    const { generateUserInfoResponse } = await import("@/lib/auth/oidc-identifiers.server");
+    await expect(generateUserInfoResponse("user-1", "app-a", ["openid", "identity:legal_name"], { sub: "s" })).rejects.toThrow("audit_unavailable");
+  });
   it("returns the app's assigned email, and saves the primary as initial assignment", async () => {
     const { generateUserInfoResponse } = await import("@/lib/auth/oidc-identifiers.server");
     db.assignments.set("app-b", { source: "alias", alias_id: "a1", assigned_email: "contact@rout.be" });

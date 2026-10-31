@@ -85,8 +85,20 @@ The GitHub Discussions tab serves as the primary coordination node for architect
 ├── Edge Runtime Deno Edge Functions (EU West Region)
 ├── Sovereign Storage Infomaniak Swiss Cloud (S3-Compatible)
 ├── Authentication WebAuthn / FIDO2 Passkey Standard
-└── License MIT Open Source
- 
+└── License AGPL-3.0-or-later (Network Copyleft)
+
+## License
+
+ROUT is licensed under the **GNU Affero General Public License v3.0 or later**
+(`AGPL-3.0-or-later`). See the official text in [LICENSE](./LICENSE).
+
+The network-copyleft requirement applies to modified versions of ROUT offered
+as a network service: users must be offered the corresponding source code under
+the license's terms. This includes ROUT's OIDC identity broker, pairwise
+identifiers, email broker and Wallet engine. Third-party dependencies retain
+their own licenses; ROUT's license does not relicense them.
+
+Copyright © 2026 ROUT · Designed & engineered by [delplanche.cloud](https://delplanche.cloud).
 
 ---
 
@@ -104,6 +116,7 @@ npm install
 
 # Launch development environment
 npm run dev
+```
 
 <div align="center">
 Rout Infrastructure • Designed in Obsidian Dark Mode (#0B0B0C) • Built for Performance & Data Sovereignty
@@ -117,4 +130,3 @@ Rout Infrastructure • Designed in Obsidian Dark Mode (#0B0B0C) • Built for P
 - `bun run docs:brevo` — regenereert de documentatie.
 - `bun run test` — unit tests o.a. voor de template-lookup in `src/emails/template-ids.ts`.
 - CI draait lint, tests, de audit en een check dat de documentatie up-to-date is (`.github/workflows/ci.yml`).
-```
