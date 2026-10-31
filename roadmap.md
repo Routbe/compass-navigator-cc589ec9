@@ -27,6 +27,7 @@
 - [x] Round 10: missing keys audited (Steam card hidden, social login 400 provider_not_configured, wallet demo, Brevo never throws); 1086 tests green, typecheck clean
 
 ## Open
+- [ ] License directive: official LICENSE, AGPL-3.0-or-later package/README, exact 2026 footer and About/Sovereignty/Manifesto consistency
 - [x] Current project: connect existing Neon and audit imported identity, email, footer, Wallet and Last.fm implementations
 - [ ] Apply existing 0139 on Neon and regenerate schema snapshot/types; run full tests
 - [ ] Harden per-app email privacy, sensitive disclosure checks and webhook host validation; add regression tests
