@@ -28,15 +28,13 @@ export function emailOptions(
   return out;
 }
 
-/** The email an app receives. A removed alias falls back to the primary address. */
+/** Explicit private choices fail closed when unavailable; never disclose primary instead. */
 export function resolveAppEmail(assignment: EmailAssignment, options: EmailOption[]): EmailOption | null {
   if (assignment?.source === "relay") {
-    const hit = options.find((o) => o.source === "relay");
-    if (hit) return hit;
+    return options.find((o) => o.source === "relay") ?? null;
   }
   if (assignment?.source === "alias") {
-    const hit = options.find((o) => o.source === "alias" && o.aliasId === assignment.aliasId);
-    if (hit) return hit;
+    return options.find((o) => o.source === "alias" && o.aliasId === assignment.aliasId) ?? null;
   }
   return options.find((o) => o.source === "primary") ?? null;
 }

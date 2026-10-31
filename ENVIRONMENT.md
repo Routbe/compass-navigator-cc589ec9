@@ -211,3 +211,7 @@ Reuses `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` and `PSP_ENCRYPTION_KEY`. Add
 - Google: `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_WALLET_PRIVATE_KEY` (service account PKCS#8 key).
 - Also accepted: `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_PASS_CERTIFICATE`, `APPLE_PASS_KEY`, `APPLE_PASS_KEY_PASSPHRASE`, `APPLE_WWDR_CERTIFICATE`, and `GOOGLE_WALLET_SERVICE_ACCOUNT` (the full service-account JSON) instead of the Google email + key.
 - Missing or partial values switch that wallet off: the share menu shows a friendly fallback and `/api/wallet/...` answers 503 with an unsigned demo payload.
+
+## Selective disclosure & music
+- `ROUT_SYBIL_PEPPER` — Server-only HMAC pepper for per-app human nullifiers and disclosure IP hashes. Keep the existing live value across deployments: changing it changes the app's uniqueness identifiers.
+- `LASTFM_API_KEY` — Optional Last.fm API credential for the first-party 30-second music relay. Without it no live track is returned. Visitors never call Last.fm directly.

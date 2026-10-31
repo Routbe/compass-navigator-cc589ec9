@@ -5,6 +5,7 @@
  */
 import { sql } from "@/lib/neon";
 import { emailUpdatedEvent, signWebhook, webhookUrlAllowed, type BulkChange } from "@/lib/oauth/backchannel";
+import { assertPublicHost } from "@/lib/safe-fetch.server";
 
 const LABEL = "rout:backchannel-webhook:v1:";
 const enc = new TextEncoder();
@@ -43,6 +44,7 @@ export async function setBackchannelWebhook(clientId: string, url: string | null
     return { secret: null };
   }
   if (!webhookUrlAllowed(url)) throw new Error("Webhook-URL moet https zijn en mag niet naar een intern adres wijzen.");
+  if (!(await assertPublicHost(new URL(url).hostname))) throw new Error("Webhook-host is niet publiek bereikbaar.");
   const secret = `whsec_${b64u(crypto.getRandomValues(new Uint8Array(32)))}`;
   const { sealed, iv } = await sealWebhookSecret(clientId, secret);
   await sql`update public.oauth_clients set backchannel_webhook_url = ${url}, backchannel_webhook_secret_sealed = ${sealed},
@@ -63,6 +65,7 @@ export async function dispatchEmailUpdated(userId: string, changes: BulkChange[]
     const url = String(r["backchannel_webhook_url"]);
     if (!change || !webhookUrlAllowed(url)) return;
     try {
+      if (!(await assertPublicHost(new URL(url).hostname))) return;
       const secret = await openWebhookSecret(clientId, String(r["backchannel_webhook_secret_sealed"]), String(r["backchannel_webhook_secret_iv"]));
       const now = Math.floor(Date.now() / 1000);
       const body = JSON.stringify(emailUpdatedEvent(await getPairwiseSubject(userId, clientId), change.previousEmail || null, change.newEmail, now));

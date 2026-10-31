@@ -679,13 +679,16 @@ export async function identityClaims(
     claims["email"] = row["email"] ?? null;
     claims["email_verified"] = Boolean(row["email_confirmed_at"]);
     if (opts.clientId) {
-      // Per-app choice (primary, alias or private relay); falls back to the primary on any failure.
+      // Per-app choice; an unavailable private choice must omit the email claim.
       try {
         const { appEmailFor } = await import("./email-broker.server");
         const chosen = await appEmailFor(userId, opts.clientId);
         if (chosen) {
           claims["email"] = chosen.email;
           claims["email_verified"] = chosen.verified;
+        } else {
+          delete claims["email"];
+          delete claims["email_verified"];
         }
       } catch (e) {
         // Fail closed: the app may have chosen the relay, so never fall back to the real address.
