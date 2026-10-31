@@ -92,12 +92,9 @@ export async function generateUserInfoResponse(
   }
   const disclosed = disclosedSensitive(grantedScopes, id.tier);
   if (disclosed.length) {
-    try {
-      await sql`insert into public.identity_disclosure_logs (user_id, client_id, disclosed_scopes, ip_hash)
-        values (${userId}, ${clientId}, ${disclosed}, ${await hashIp(opts.ip ?? null)})`;
-    } catch (e) {
-      console.warn("[userinfo] disclosure log failed", (e as Error)?.message);
-    }
+    // No sensitive claims may leave ROUT without their disclosure record.
+    await sql`insert into public.identity_disclosure_logs (user_id, client_id, disclosed_scopes, ip_hash)
+      values (${userId}, ${clientId}, ${disclosed}, ${await hashIp(opts.ip ?? null)})`;
   }
   return { sub: opts.sub, ...claims };
 }

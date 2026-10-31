@@ -11,7 +11,7 @@ describe("relay as an e-mail choice", () => {
   it("gives the app the relay when chosen, else the primary", () => {
     const opts = emailOptions({ email: "j@mail.be", verified: true }, [], RELAY);
     expect(resolveAppEmail({ source: "relay", aliasId: null }, opts)?.email).toBe(RELAY);
-    expect(resolveAppEmail({ source: "relay", aliasId: null }, emailOptions({ email: "j@mail.be", verified: true }, []))?.email).toBe("j@mail.be");
+    expect(resolveAppEmail({ source: "relay", aliasId: null }, emailOptions({ email: "j@mail.be", verified: true }, []))).toBeNull();
   });
 });
 

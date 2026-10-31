@@ -19,8 +19,8 @@ describe("email broker", () => {
   it("gives the app the chosen alias", () => {
     expect(resolveAppEmail({ source: "alias", aliasId: "a1" }, opts)?.email).toBe("jona@rout.be");
   });
-  it("falls back to primary when the chosen alias is gone", () => {
-    expect(resolveAppEmail({ source: "alias", aliasId: "gone" }, opts)?.email).toBe("jona@mail.be");
+  it("never discloses primary when the chosen alias is gone", () => {
+    expect(resolveAppEmail({ source: "alias", aliasId: "gone" }, opts)).toBeNull();
   });
   it("refuses choices that are not the user's own", () => {
     expect(pickOption("a2", opts)).toBeNull();

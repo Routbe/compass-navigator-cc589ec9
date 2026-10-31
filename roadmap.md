@@ -27,6 +27,12 @@
 - [x] Round 10: missing keys audited (Steam card hidden, social login 400 provider_not_configured, wallet demo, Brevo never throws); 1086 tests green, typecheck clean
 
 ## Open
+- [x] Current project: connect existing Neon and audit imported identity, email, footer, Wallet and Last.fm implementations
+- [ ] Apply existing 0139 on Neon and regenerate schema snapshot/types; run full tests
+- [ ] Harden per-app email privacy, sensitive disclosure checks and webhook host validation; add regression tests
+- [ ] Finish identity merge/biometric step-up, uniform pairwise rollout and scope enforcement without breaking existing app bindings
+- [ ] Align footer/README licensing and hosting claims with verified deployment facts
+- [ ] Verify authenticated email/consent/bulk-update flow with real accounts (blocked by existing live secrets)
 - [x] Relay address as a choice on the "Login met ROUT" consent screen (0138 applied)
 - [ ] Expansion rounds C–G (encounters, ZK badges/VIES/employee credentials, human-only drops + E2E forms, brand kits + SEPA, human_verified claim + rout.config.json) — each needs its own plan
 

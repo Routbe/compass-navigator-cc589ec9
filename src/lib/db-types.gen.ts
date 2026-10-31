@@ -728,6 +728,15 @@ export interface PublicGuestbookEntriesRow {
   "created_at": string | Date;
 }
 
+export interface PublicIdentityDisclosureLogsRow {
+  "id": string;
+  "user_id": string;
+  "client_id": string;
+  "disclosed_scopes": Array<string>;
+  "disclosed_at": string | Date;
+  "ip_hash": string;
+}
+
 export interface PublicIdentityLabelsRow {
   "account_id": string;
   "provider": string;
@@ -954,6 +963,11 @@ export interface PublicOauthClientsRow {
   "subject_type": string;
   "sector_id": string | null;
   "post_logout_redirect_uris": Array<string>;
+  "allowed_scopes": Array<string>;
+  "is_trusted_kyc_partner": boolean;
+  "backchannel_webhook_url": string | null;
+  "backchannel_webhook_secret_sealed": string | null;
+  "backchannel_webhook_secret_iv": string | null;
 }
 
 export interface PublicOauthConsentsRow {
@@ -2004,6 +2018,7 @@ export interface DbTables {
   "public.gallery_objects": PublicGalleryObjectsRow;
   "public.gift_cards": PublicGiftCardsRow;
   "public.guestbook_entries": PublicGuestbookEntriesRow;
+  "public.identity_disclosure_logs": PublicIdentityDisclosureLogsRow;
   "public.identity_labels": PublicIdentityLabelsRow;
   "public.identity_link_events": PublicIdentityLinkEventsRow;
   "public.identity_links": PublicIdentityLinksRow;

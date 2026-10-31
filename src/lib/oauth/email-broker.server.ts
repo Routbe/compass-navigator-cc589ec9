@@ -20,10 +20,11 @@ export async function emailOptionsOf(userId: string, clientId?: string | null): 
   );
 }
 
-/** Saves the user's choice; unknown choices are ignored (primary stays the default). */
+/** Saves only an explicit choice belonging to this user; invalid selections are refused. */
 export async function assignAppEmail(userId: string, clientId: string, choiceId: string | undefined): Promise<void> {
+  if (!choiceId) return;
   const opt = pickOption(choiceId, await emailOptionsOf(userId, clientId));
-  if (!opt) return;
+  if (!opt) throw new Error("email_choice_unavailable");
   let email = opt.email;
   if (opt.source === "relay") {
     const { ensureForwardingAddress } = await import("./email-forwarding.server");
@@ -55,6 +56,13 @@ export async function appEmailFor(userId: string, clientId: string | null): Prom
   // secret is missing here: the real address is never handed out instead.
   if (source === "relay" && typeof r["assigned_email"] === "string") {
     return { id: "relay", source: "relay", aliasId: null, email: r["assigned_email"], verified: true };
+  }
+  // A primary assignment is a consented snapshot. Changing ROUT's primary
+  // address must not change an app's address before the member selects that app.
+  if (source === "primary" && typeof r["assigned_email"] === "string") {
+    const primary = options.find((o) => o.source === "primary");
+    return { id: "primary", source: "primary", aliasId: null, email: r["assigned_email"],
+      verified: Boolean(primary?.verified && primary.email.toLowerCase() === r["assigned_email"].toLowerCase()) };
   }
   const resolved = resolveAppEmail({ source, aliasId: (r["alias_id"] as string | null) ?? null }, options);
   // The stored relay address is the one the forwarding rule knows; prefer it over a re-derived one.
