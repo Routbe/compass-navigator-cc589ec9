@@ -113,12 +113,7 @@
       "max": "9223372036854775807",
       "cycle": false,
       "ownedBy": "public.security_audit_logs.id",
-      "grants": {
-        "rout_app": [
-          "SELECT",
-          "USAGE"
-        ]
-      }
+      "grants": {}
     }
   ],
   "tables": [
@@ -1278,10 +1273,8 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
-          "SELECT",
-          "UPDATE"
+          "SELECT"
         ]
       }
     },
@@ -1362,7 +1355,6 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -3904,7 +3896,7 @@
         {
           "name": "booking_event_types_duration_minutes_check",
           "kind": "c",
-          "def": "CHECK ((((duration_minutes >= 5) AND (duration_minutes <= 480)) AND ((duration_minutes % 5) = 0)))"
+          "def": "CHECK (((duration_minutes >= 5) AND (duration_minutes <= 480) AND ((duration_minutes % 5) = 0)))"
         },
         {
           "name": "booking_event_types_location_kind_check",
@@ -7197,10 +7189,8 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
-          "SELECT",
-          "UPDATE"
+          "SELECT"
         ]
       }
     },
@@ -9653,10 +9643,8 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
-          "SELECT",
-          "UPDATE"
+          "SELECT"
         ]
       }
     },
@@ -9771,7 +9759,6 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -13272,14 +13259,7 @@
       "rls": true,
       "forceRls": false,
       "policies": [],
-      "grants": {
-        "rout_app": [
-          "DELETE",
-          "INSERT",
-          "SELECT",
-          "UPDATE"
-        ]
-      }
+      "grants": {}
     },
     {
       "schema": "public",
@@ -13395,14 +13375,7 @@
       "rls": true,
       "forceRls": false,
       "policies": [],
-      "grants": {
-        "rout_app": [
-          "DELETE",
-          "INSERT",
-          "SELECT",
-          "UPDATE"
-        ]
-      }
+      "grants": {}
     },
     {
       "schema": "public",
@@ -17606,7 +17579,6 @@
       ],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -17963,7 +17935,6 @@
       "policies": [],
       "grants": {
         "rout_app": [
-          "DELETE",
           "INSERT",
           "SELECT",
           "UPDATE"
@@ -18806,7 +18777,7 @@
         {
           "name": "workspaces_slug_check",
           "kind": "c",
-          "def": "CHECK ((((char_length(slug) >= 3) AND (char_length(slug) <= 40)) AND (slug ~ '^[a-z0-9-]+$'::text) AND (slug <> ALL (ARRAY['admin'::text, 'api'::text, 'auth'::text, 'u'::text, 'w'::text, 'studio'::text, 'settings'::text, 'rout'::text])))) NOT VALID"
+          "def": "CHECK (((char_length(slug) >= 3) AND (char_length(slug) <= 40) AND (slug ~ '^[a-z0-9-]+$'::text) AND (slug <> ALL (ARRAY['admin'::text, 'api'::text, 'auth'::text, 'u'::text, 'w'::text, 'studio'::text, 'settings'::text, 'rout'::text])))) NOT VALID"
         },
         {
           "name": "workspaces_slug_key",
