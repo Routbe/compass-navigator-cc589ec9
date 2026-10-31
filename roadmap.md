@@ -27,12 +27,13 @@
 - [x] Round 10: missing keys audited (Steam card hidden, social login 400 provider_not_configured, wallet demo, Brevo never throws); 1086 tests green, typecheck clean
 
 ## Open
-- [ ] License directive: official LICENSE, AGPL-3.0-or-later package/README, exact 2026 footer and About/Sovereignty/Manifesto consistency
+- [x] License directive: official LICENSE, AGPL-3.0-or-later package/README, exact 2026 footer and About/Sovereignty/Manifesto consistency (desktop/mobile checked)
 - [x] Current project: connect existing Neon and audit imported identity, email, footer, Wallet and Last.fm implementations
-- [ ] Apply existing 0139 on Neon and regenerate schema snapshot/types; run full tests
-- [ ] Harden per-app email privacy, sensitive disclosure checks and webhook host validation; add regression tests
-- [ ] Finish identity merge/biometric step-up, uniform pairwise rollout and scope enforcement without breaking existing app bindings
-- [ ] Align footer/README licensing and hosting claims with verified deployment facts
+- [x] Apply existing 0139 on Neon and regenerate replay-based schema snapshot/types; typecheck clean, 1110 tests green
+- [x] Harden per-app email privacy, sensitive disclosure audit writes and webhook DNS host validation; add UserInfo and transactional bulk regression tests
+- [ ] Identity merge/biometric step-up, uniform pairwise rollout and scope enforcement: not completed; existing client binding compatibility and verified WebAuthn proof require a dedicated security implementation
+- [ ] Live schema differences: 9 grants and audit sequence differ from migration replay; historical 91_shadowban checksum differs. Needs reviewed delta, never rewrite history
+- [ ] Hosting/privacy guarantees and repository metadata alignment: needs production infrastructure/vendor evidence and repository write access; license text is aligned
 - [ ] Verify authenticated email/consent/bulk-update flow with real accounts (blocked by existing live secrets)
 - [x] Relay address as a choice on the "Login met ROUT" consent screen (0138 applied)
 - [ ] Expansion rounds C–G (encounters, ZK badges/VIES/employee credentials, human-only drops + E2E forms, brand kits + SEPA, human_verified claim + rout.config.json) — each needs its own plan
