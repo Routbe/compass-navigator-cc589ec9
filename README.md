@@ -25,7 +25,7 @@
 <br /><br />
 
 <p align="center">
-  <code>MIT License</code> &nbsp;•&nbsp; 
+  <a href="./LICENSE"><code>AGPL-3.0-or-later</code></a> &nbsp;•&nbsp;
   <code>PostgreSQL (EU Nodes)</code> &nbsp;•&nbsp; 
   <code>WebAuthn Passkeys</code> &nbsp;•&nbsp; 
   <code>Zero Telemetry Harvesting</code>
@@ -86,6 +86,7 @@ The GitHub Discussions tab serves as the primary coordination node for architect
 ├── Sovereign Storage Infomaniak Swiss Cloud (S3-Compatible)
 ├── Authentication WebAuthn / FIDO2 Passkey Standard
 └── License MIT Open Source
+ 
 
 ---
 
