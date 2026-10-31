@@ -25,9 +25,9 @@ export const TRUST_BADGES: { id: string; label: string; detail: string; tooltip:
   },
   {
     id: "agpl",
-    label: "AGPL-3.0 Open Source",
-    detail: "The full source is auditable and self-hostable under the AGPL-3.0 licence.",
-    tooltip: "Every line is public: audit it, fork it, or self-host it under AGPL-3.0.",
+    label: "AGPLv3 (Network Copyleft)",
+    detail: "The full source is auditable and self-hostable under AGPL-3.0-or-later.",
+    tooltip: "Audit, fork or self-host under AGPL-3.0-or-later; modified network services must offer their corresponding source to users.",
   },
   {
     id: "no-trackers",

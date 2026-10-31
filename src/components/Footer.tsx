@@ -173,7 +173,7 @@ export function Footer() {
         <div className="mt-10 flex flex-col items-center gap-2 border-t border-border/40 pt-5 text-center text-xs text-muted-foreground">
           <p>
             <span>© 2026 ROUT</span>{" "}
-            • Open Source (AGPLv3) • Designed &amp; engineered by{" "}
+            · Open Source (AGPLv3) · Designed &amp; engineered by{" "}
             <a
               href="https://delplanche.cloud"
               target="_blank"

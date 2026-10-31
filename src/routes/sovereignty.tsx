@@ -52,7 +52,7 @@ function SovereigntyPage() {
             <KeyRound className="size-3.5" aria-hidden /> Passkeys &amp; OIDC
           </span>
           <span className={badgeClass}>
-            <Scale className="size-3.5" aria-hidden /> AGPL-3.0
+            <Scale className="size-3.5" aria-hidden /> AGPLv3 (Netwerk-Copyleft)
           </span>
         </div>
       }
@@ -142,12 +142,12 @@ function SovereigntyPage() {
         },
         {
           id: "agpl",
-          heading: numbered("04", "Open source & auditability (AGPL-3.0)"),
+          heading: numbered("04", "Open source & auditability — AGPLv3 (Netwerk-Copyleft)"),
           wrapperClassName: sectionWrapper,
           body: (
             <p className={bodyText}>
               ROUT is licensed under the{" "}
-              <span className={strong}>GNU Affero General Public License v3.0</span>. Every claim on
+              <span className={strong}>GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)</span>. Every claim on
               this page is checkable against the source: the client-side generator, the redirect
               handler and the analytics pipeline are all public. The AGPL's network clause means any
               hosted fork must publish its modifications, so the guarantees travel with the code.

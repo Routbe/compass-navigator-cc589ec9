@@ -83,8 +83,8 @@ const SEALS: Seal[] = [
   },
   {
     id: "agpl",
-    tag: "AGPLv3 Open Source",
-    label: "AGPL-3.0",
+    tag: "AGPLv3 (Network Copyleft)",
+    label: "AGPL-3.0-or-later",
     Seal: AgplSeal,
     claim: "The full source is auditable and self-hostable.",
     proof: [
