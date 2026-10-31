@@ -165,6 +165,7 @@ import { Route as ApiPublicCronSyncFollowersRouteImport } from './routes/api_.pu
 import { Route as ApiPublicCronSyncSocialsRouteImport } from './routes/api_.public.cron.sync-socials'
 import { Route as ApiPublicIdentityDiditWebhookRouteImport } from './routes/api_.public.identity.didit-webhook'
 import { Route as ApiPublicIdentityWCallbackRouteImport } from './routes/api_.public.identity.w-callback'
+import { Route as ApiPublicLastfmHandleRouteImport } from './routes/api_.public.lastfm.$handle'
 import { Route as ApiPublicMastodonServersRouteImport } from './routes/api_.public.mastodon.servers'
 import { Route as ApiPublicMastodonStartRouteImport } from './routes/api_.public.mastodon.start'
 import { Route as ApiPublicOauthIntrospectRouteImport } from './routes/api_.public.oauth.introspect'
@@ -1026,6 +1027,11 @@ const ApiPublicIdentityWCallbackRoute =
     path: '/api/public/identity/w-callback',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicLastfmHandleRoute = ApiPublicLastfmHandleRouteImport.update({
+  id: '/api_/public/lastfm/$handle',
+  path: '/api/public/lastfm/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMastodonServersRoute =
   ApiPublicMastodonServersRouteImport.update({
     id: '/api_/public/mastodon/servers',
@@ -1396,6 +1402,7 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
   '/api/public/identity/w-callback': typeof ApiPublicIdentityWCallbackRoute
+  '/api/public/lastfm/$handle': typeof ApiPublicLastfmHandleRoute
   '/api/public/mastodon/servers': typeof ApiPublicMastodonServersRoute
   '/api/public/mastodon/start': typeof ApiPublicMastodonStartRoute
   '/api/public/oauth/introspect': typeof ApiPublicOauthIntrospectRoute
@@ -1586,6 +1593,7 @@ export interface FileRoutesByTo {
   '/api/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
   '/api/public/identity/w-callback': typeof ApiPublicIdentityWCallbackRoute
+  '/api/public/lastfm/$handle': typeof ApiPublicLastfmHandleRoute
   '/api/public/mastodon/servers': typeof ApiPublicMastodonServersRoute
   '/api/public/mastodon/start': typeof ApiPublicMastodonStartRoute
   '/api/public/oauth/introspect': typeof ApiPublicOauthIntrospectRoute
@@ -1783,6 +1791,7 @@ export interface FileRoutesById {
   '/api_/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api_/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
   '/api_/public/identity/w-callback': typeof ApiPublicIdentityWCallbackRoute
+  '/api_/public/lastfm/$handle': typeof ApiPublicLastfmHandleRoute
   '/api_/public/mastodon/servers': typeof ApiPublicMastodonServersRoute
   '/api_/public/mastodon/start': typeof ApiPublicMastodonStartRoute
   '/api_/public/oauth/introspect': typeof ApiPublicOauthIntrospectRoute
@@ -1980,6 +1989,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/sync-socials'
     | '/api/public/identity/didit-webhook'
     | '/api/public/identity/w-callback'
+    | '/api/public/lastfm/$handle'
     | '/api/public/mastodon/servers'
     | '/api/public/mastodon/start'
     | '/api/public/oauth/introspect'
@@ -2170,6 +2180,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/sync-socials'
     | '/api/public/identity/didit-webhook'
     | '/api/public/identity/w-callback'
+    | '/api/public/lastfm/$handle'
     | '/api/public/mastodon/servers'
     | '/api/public/mastodon/start'
     | '/api/public/oauth/introspect'
@@ -2366,6 +2377,7 @@ export interface FileRouteTypes {
     | '/api_/public/cron/sync-socials'
     | '/api_/public/identity/didit-webhook'
     | '/api_/public/identity/w-callback'
+    | '/api_/public/lastfm/$handle'
     | '/api_/public/mastodon/servers'
     | '/api_/public/mastodon/start'
     | '/api_/public/oauth/introspect'
@@ -2522,6 +2534,7 @@ export interface RootRouteChildren {
   ApiPublicCronSyncSocialsRoute: typeof ApiPublicCronSyncSocialsRoute
   ApiPublicIdentityDiditWebhookRoute: typeof ApiPublicIdentityDiditWebhookRoute
   ApiPublicIdentityWCallbackRoute: typeof ApiPublicIdentityWCallbackRoute
+  ApiPublicLastfmHandleRoute: typeof ApiPublicLastfmHandleRoute
   ApiPublicMastodonServersRoute: typeof ApiPublicMastodonServersRoute
   ApiPublicMastodonStartRoute: typeof ApiPublicMastodonStartRoute
   ApiPublicOauthIntrospectRoute: typeof ApiPublicOauthIntrospectRoute
@@ -3641,6 +3654,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicIdentityWCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api_/public/lastfm/$handle': {
+      id: '/api_/public/lastfm/$handle'
+      path: '/api/public/lastfm/$handle'
+      fullPath: '/api/public/lastfm/$handle'
+      preLoaderRoute: typeof ApiPublicLastfmHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api_/public/mastodon/servers': {
       id: '/api_/public/mastodon/servers'
       path: '/api/public/mastodon/servers'
@@ -4237,6 +4257,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronSyncSocialsRoute: ApiPublicCronSyncSocialsRoute,
   ApiPublicIdentityDiditWebhookRoute: ApiPublicIdentityDiditWebhookRoute,
   ApiPublicIdentityWCallbackRoute: ApiPublicIdentityWCallbackRoute,
+  ApiPublicLastfmHandleRoute: ApiPublicLastfmHandleRoute,
   ApiPublicMastodonServersRoute: ApiPublicMastodonServersRoute,
   ApiPublicMastodonStartRoute: ApiPublicMastodonStartRoute,
   ApiPublicOauthIntrospectRoute: ApiPublicOauthIntrospectRoute,
